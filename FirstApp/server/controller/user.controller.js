@@ -1,6 +1,6 @@
 const User = require('../models/user.model');
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const SECRET = "2048";
 
 module.exports={
 
@@ -33,20 +33,17 @@ module.exports={
     register: async (req, res) => {
         try {
             const user = new User(req.body);
-            const newUser = await user.save()
-            const userToken = jwt.sign({id:newUser._id}, SECRET)
-            console.log(`USER ID ${newUser._id} \nuserToken : ${userToken} `);
-
-            res.status(201).cookie("userToken", userToken, {httpOnly:true}).json(newUser)
-            
-
-        }
-        catch (error) {
-            res.status(400).json(error)
+            const newUser = await user.save();
+            const userToken = jwt.sign({ id: newUser._id }, SECRET);
+            // Combinez l'envoi de la réponse JSON et l'ajout du cookie dans la même instruction
+            res.status(201).cookie("userToken", userToken, { httpOnly: true }).json(newUser);
+        } catch (error) {
+            res.status(400).json(error);
+            console.log(error);
         }
     },
     login: async (req, res) => {
-        const userFromDB = await Student.findOne({ email: req.body.email });
+        const userFromDB = await User.findOne({ email: req.body.email });
         if (!userFromDB) {
             res.status(404).json({ error: "USER NOT FOUND" })
         } else {

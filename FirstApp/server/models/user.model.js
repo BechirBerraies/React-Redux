@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+
 UserSchema = new mongoose.Schema({
     Name: {
         type : String ,
@@ -27,31 +28,31 @@ UserSchema = new mongoose.Schema({
 
 },{ timestamps: true });
 
-UserSchema.virtual('confirmPassword').get(()=>this._confirmPassword)
-.set(value => this._confirmPassword = value);
-UserSchema.pre('validate',function(next){
-    console.log("INSIDE VALIDATE CONFIRM PASSWORD")
-    console.log(`Password :${this.password}\n Confirm Password ${this.confirmPassword}`);
-    if(this.password != this.confirmPassword){
-        this.invalidate('confirmPassword','Password Must match ')
+// UserSchema.virtual('confirmPassword').get(()=>this._confirmPassword)
+// .set(value => this._confirmPassword = value);
+// UserSchema.pre('validate',function(next){
+//     console.log("INSIDE VALIDATE CONFIRM PASSWORD")
+//     console.log(`Password :${this.comparingPassword}\n Confirm Password ${this.confirmPassword}`);
+//     if(this.comparingPassword != this.confirmPassword){
+//         this.invalidate('confirmPassword','Password Must match ')
 
-    }
-    next()
-})
+//     }
+//     next()
+// })
 
 
-UserSchema.pre('save', async function(next){
-    console.log("Inside Pre Save Hook");
-    try{
-        const hashedPassword = await bcrypt.hash(this.password,10);
-        console.log(`"PASSWORD TEXT : ", ${this.password}\n HASED PASSWORD : ${hashedPassword}`)
-        this.password= hashedPassword
-    }
-    catch(error){
-        console.log(error);
-    }
-    next()
-})
+// UserSchema.pre('save', async function(next){
+//     console.log("Inside Pre Save Hook");
+//     try{
+//         const hashedPassword = await bcrypt.hash(this.password,10);
+//         console.log(`"PASSWORD TEXT : " ${this.password}\n HASED PASSWORD : ${hashedPassword}`)
+//         this.password= hashedPassword
+//     }
+//     catch(error){
+//         console.log(error);
+//     }
+//     next()
+// })
 
 
 
