@@ -48,12 +48,10 @@ module.exports={
             res.status(404).json({ error: "USER NOT FOUND" })
         } else {
             try {
-                const isPasswordValid = await bcrypt.compare(req.body.password, userFromDB.password)
-                if (isPasswordValid) {
+                if (req.body.password == userFromDB.password ) {
                     const userToken = jwt.sign({id: userFromDB._id}, SECRET)
                     console.log(`USER ID ${userFromDB._id} \nuserToken : ${userToken} `);
                     res.status(200).cookie("userToken", userToken, {httpOnly:true}).json({ message: "User Logged in successfully !!" })
-                    // res.status(200).json({ message: "User Logged in successfully !!" })
                 } else {
                     res.status(400).json({ message: "PAssword incorrect" })
                 }
@@ -69,7 +67,10 @@ module.exports={
             res.clearCookie("userToken")
             res.status(200).json({message:"User logged out Successfully!!"})
         } catch (error) {
+            console.log(userToken);
+            console.log(error);
             res.status(500).json({message:'Somenthing went wrong', error})
+            console.log(req.cookies.userToken);
         }
     },
 
