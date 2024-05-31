@@ -3,6 +3,10 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+import io from 'socket.io-client';
+const socket = io('http://localhost:8000');
+
+
 const Home = () => {
     const users = useSelector(state => state.user.users);
     const navigate = useNavigate();
