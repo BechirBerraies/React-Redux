@@ -67,7 +67,8 @@ module.exports={
             res.clearCookie("userToken")
             res.status(200).json({message:"User logged out Successfully!!"})
         } catch (error) {
-            console.log(userToken);
+            str = JSON.stringify(req);
+            console.log("this is req : " + str);
             console.log(error);
             res.status(500).json({message:'Somenthing went wrong', error})
             console.log(req.cookies.userToken);
